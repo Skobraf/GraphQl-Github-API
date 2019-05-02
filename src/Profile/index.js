@@ -5,8 +5,8 @@ import Loading from '../Loading';
 import ErrorMessage from '../Error';
 
 const GET_CURRENT_USER = gql`
- query ($query: String!, $type: String, $first: int!, $after: String) {
-     	search(query: "is:public archived:false created:>2019-04-15", type:REPOSITORY, first:4 ) {
+ query ($query:String!, $cursor: String) {
+     	search(query: $query, type:REPOSITORY, first:4, after: $cursor ) {
     			edges{
             node {
               ...on Repository{
@@ -33,24 +33,46 @@ const GET_CURRENT_USER = gql`
   }
 }
 `;
+class Profile extends React.Component {
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll);
+  }
 
-const Profile = () => (
-  <Query query={GET_CURRENT_USER}>
-    {({ data, loading, error }) => {
-        if (error) {
-            return <ErrorMessage error={error} />
-        }
-      const { viewer } = data;
-      if(loading || !viewer) {
-          return <Loading />;
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+  handleScroll = () => {
+    window.onscroll = () => {
+      // Checks that the page has scrolled to the bottom
+      if (
+        window.innerHeight + document.documentElement.scrollTop ===
+        document.documentElement.offsetHeight
+      ) {
+        this.loadUsers();
       }
-      return (
-        <div>
-            {viewer.login} {viewer.name}
-        </div>
-      );
-    }}
-  </Query>
-);
+    };
+  }
+  render () {
+    return (
+      <Query query={GET_CURRENT_USER}>
+      {({ data, loading, error }) => {
+        const { search } = data;
+          if (error) {
+              return <ErrorMessage error={error} />
+          }
+        
+        if(loading || !data) {
+            return <Loading />;
+        }
+        return (
+          <div>
+              {console.log(search)}
+          </div>
+        );
+      }}
+    </Query>
+    )
+  }
+}
 
 export default Profile;
