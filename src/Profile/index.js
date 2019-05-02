@@ -38,7 +38,7 @@ const GET_CURRENT_USER = gql`
 class Profile extends React.Component {
 
   render () {
-    const date = new moment(new Date()).substract(1, 'months');
+    const date = new moment(new Date()).subtract(1, "weeks");
     const dateFormat = date.format("YYYY-MM-DD");
     const query = `is:public archived:false sort:stars-desc created:>${dateFormat}`;
     return (
@@ -50,7 +50,7 @@ class Profile extends React.Component {
       }}
       >
       {({ data, loading, error, fetchMore }) => {
-        const { search } = this.data;
+        const { search } = data;
           if (error) {
               return <ErrorMessage error={error} />
           }
@@ -61,8 +61,8 @@ class Profile extends React.Component {
         return (
           <Repos
           loading={loading}
-          entries={search}
-          onLoadMore={() =>
+          users={search}
+          loadUsers={() =>
             fetchMore({
               variables: {
                 query,
