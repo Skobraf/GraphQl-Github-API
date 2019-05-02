@@ -7,3 +7,4 @@ class Repos extends React.Component {
         )
     }
 }
+export default Repos;

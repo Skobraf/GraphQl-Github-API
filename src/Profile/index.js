@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import Loading from '../Loading';
 import ErrorMessage from '../Error';
 import Repos from '../Repos';
+import moment from "moment";
 
 const GET_CURRENT_USER = gql`
  query ($query:String!, $cursor: String) {
