@@ -5,10 +5,31 @@ import Loading from '../Loading';
 import ErrorMessage from '../Error';
 
 const GET_CURRENT_USER = gql`
-  query { 
-  viewer { 
-    login
-    name
+ query ($query: String!, $type: String, $first: int!, $after: String) {
+     	search(query: "is:public archived:false created:>2019-04-15", type:REPOSITORY, first:4 ) {
+    			edges{
+            node {
+              ...on Repository{
+                name
+                owner {
+                  avatarUrl
+                  login
+                }
+                description
+                issues{
+                  totalCount
+                }
+                stargazers{
+                  totalCount
+                }
+                createdAt
+              }
+            }
+          }
+    			pageInfo{
+            endCursor
+            hasNextPage
+          }
   }
 }
 `;
