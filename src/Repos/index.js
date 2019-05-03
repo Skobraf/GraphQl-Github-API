@@ -1,4 +1,5 @@
 import React from 'react';
+import { style }from './style.css';
 
 class Repos extends React.Component {
     componentDidMount() {
@@ -34,14 +35,14 @@ class Repos extends React.Component {
                             <li><p>{node.description}</p></li>
                             <li>
                                 <div style={{ display: "inline-block"}}>
-                                    <span>Stars: {}</span>
+                                    <span>Stars: {node.stargazers.totalCount}</span>
                                 </div>
                                 <div style={{ display: "inline-block"}}>
-                                    <span>Stars: {}</span>
+                                    <span>Issues: {node.issues.totalCount}</span>
                                 </div>
                                 <div style={{ display: "inline-block"}}>
                                     <p>
-                                        Submited
+                                        Submited {node.createdAt} by: {node.owner.login}
                                     </p>
                                 </div>
                             </li>
